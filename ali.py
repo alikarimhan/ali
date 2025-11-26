@@ -8,7 +8,6 @@ CSV_FILE = "changes.csv"
 
 
 def run_git(cmd):
-    """Git командасын орындау және нәтижесін қайтару."""
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
         print("Git қатесі:", result.stderr.strip())
@@ -17,14 +16,12 @@ def run_git(cmd):
 
 
 def check_git_repo():
-    """Бұл қалта Git репозиторий ме?"""
     result = subprocess.run(["git", "rev-parse", "--is-inside-work-tree"],
                             capture_output=True, text=True)
     return result.returncode == 0
 
 
 def get_changes():
-    """git status --short арқылы өзгерістерді алу."""
     output = run_git(["git", "status", "--short"])
     if not output:
         return []
@@ -40,7 +37,6 @@ def get_changes():
 
 
 def write_csv(changes):
-    """Өзгерістерді CSV-ге жазу."""
     with open(CSV_FILE, "w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
         writer.writerow(["Status", "Filename", "Timestamp"])
@@ -51,7 +47,6 @@ def write_csv(changes):
 
 
 def git_commit_and_push():
-    """CSV файлын GitHub-қа commit және push жасау."""
     print("CSV файл Git-ке қосылуда...")
     run_git(["git", "add", CSV_FILE])
 
